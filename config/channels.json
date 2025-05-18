@@ -1,0 +1,94 @@
+{
+    "channels": [
+        {
+            "name": "CCTV-1综合",
+            "url": "http://ott.mobaibox.com/PLTV/3/224/3221227896/index.m3u8",
+            "category": "央视",
+            "quality": ["高清"],
+            "active": true
+        },
+        {
+            "name": "CCTV-2财经",
+            "url": "http://223.110.245.17/ott.js.chinamobile.com/PLTV/3/224/3221227543/index.m3u8",
+            "category": "央视",
+            "quality": ["高清"],
+            "active": true
+        },
+        {
+            "name": "CCTV-3综艺",
+            "url": "http://223.110.245.17/ott.js.chinamobile.com/PLTV/3/224/3221227546/index.m3u8",
+            "category": "央视",
+            "quality": ["高清"],
+            "active": true
+        },
+        {
+            "name": "CCTV-4中文国际",
+            "url": "http://223.110.245.17/ott.js.chinamobile.com/PLTV/3/224/3221227658/index.m3u8",
+            "category": "央视",
+            "quality": ["高清"],
+            "active": true
+        },
+        {
+            "name": "CCTV-5体育",
+            "url": "http://223.110.245.17/ott.js.chinamobile.com/PLTV/3/224/3221227617/index.m3u8",
+            "category": "央视",
+            "quality": ["高清"],
+            "active": true
+        },
+        {
+            "name": "湖南卫视",
+            "url": "http://223.110.245.17/ott.js.chinamobile.com/PLTV/3/224/3221227698/index.m3u8",
+            "category": "卫视",
+            "quality": ["高清"],
+            "active": true
+        },
+        {
+            "name": "江苏卫视",
+            "url": "http://223.110.245.17/ott.js.chinamobile.com/PLTV/3/224/3221227668/index.m3u8",
+            "category": "卫视",
+            "quality": ["高清"],
+            "active": true
+        },
+        {
+            "name": "浙江卫视",
+            "url": "http://223.110.245.17/ott.js.chinamobile.com/PLTV/3/224/3221227744/index.m3u8",
+            "category": "卫视",
+            "quality": ["高清"],
+            "active": true
+        },
+        {
+            "name": "北京卫视",
+            "url": "http://223.110.245.17/ott.js.chinamobile.com/PLTV/3/224/3221227652/index.m3u8",
+            "category": "卫视",
+            "quality": ["高清"],
+            "active": true
+        },
+        {
+            "name": "广东卫视",
+            "url": "http://223.110.245.17/ott.js.chinamobile.com/PLTV/3/224/3221227691/index.m3u8",
+            "category": "卫视",
+            "quality": ["高清"],
+            "active": true
+        }
+    ],
+    "categories": [
+        "央视",
+        "卫视",
+        "地方",
+        "体育",
+        "影视",
+        "国际",
+        "其他"
+    ],
+    "settings": {
+        "defaultQuality": "高清",
+        "defaultProtocol": "hls",
+        "bufferSize": {
+            "ios9": 30,
+            "default": 60
+        },
+        "maxRetries": 3,
+        "retryInterval": 1000,
+        "preferredCDN": "auto"
+    }
+} 

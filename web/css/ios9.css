@@ -1,0 +1,86 @@
+/* iOS 9专用优化样式 */
+
+.ios9-device {
+    /* 减少视觉效果，降低渲染负担 */
+    -webkit-font-smoothing: none;
+    text-shadow: none;
+    box-shadow: none !important;
+}
+
+.ios9-device .player-container {
+    /* 简化播放器容器 */
+    box-shadow: none;
+    border: 1px solid #e1e1e1;
+}
+
+.ios9-device .video-js {
+    /* 移除不必要的视觉效果 */
+    box-shadow: none;
+    background-color: #000;
+}
+
+/* 简化控制条 */
+.ios9-device .vjs-control-bar {
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: space-between;
+    height: 3em;
+}
+
+/* 减少动画效果 */
+.ios9-device * {
+    transition-duration: 0.1s !important;
+    animation-duration: 0.1s !important;
+}
+
+/* 简化加载动画 */
+.ios9-device .spinner {
+    border-width: 0.3em;
+    width: 2em;
+    height: 2em;
+}
+
+/* 改进按钮触摸区域 */
+.ios9-device button {
+    min-height: 44px; /* 苹果推荐触摸目标最小尺寸 */
+    min-width: 44px;
+}
+
+/* 优化下拉菜单 */
+.ios9-device select {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    height: 44px;
+    font-size: 16px; /* 防止iOS自动缩放 */
+}
+
+/* 优化滚动性能 */
+.ios9-device .channel-list {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+    max-height: 400px;
+}
+
+/* 优化链接点击区域 */
+.ios9-device a {
+    padding: 10px;
+    margin: -10px;
+}
+
+/* 改善表单元素 */
+.ios9-device input[type="range"] {
+    height: 44px;
+    -webkit-appearance: none;
+    background-color: #ddd;
+    border-radius: 10px;
+}
+
+.ios9-device input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #007aff;
+}
+
+/* 减少复杂选择器和嵌套规则 */ 

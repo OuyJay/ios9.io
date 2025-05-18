@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS9流媒体 · 管理后台</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">iOS9流媒体管理后台</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">频道管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">系统状态</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">日志查看</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../web/index.html" target="_blank">查看前台</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>频道管理</h2>
+                    <button class="btn btn-primary" id="addChannelBtn">添加频道</button>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="channelTabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#allChannels">全部频道</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#cctvTab">央视</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#satelliteTab">卫视</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#localTab">地方</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#sportsTab">体育</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#movieTab">影视</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="allChannels">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>频道名称</th>
+                                                <th>分类</th>
+                                                <th>播放地址</th>
+                                                <th>画质</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="channelTableBody">
+                                            <!-- 动态加载频道列表 -->
+                                            <tr>
+                                                <td colspan="6" class="text-center">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="visually-hidden">加载中...</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="cctvTab">
+                                <!-- 央视频道列表 -->
+                            </div>
+                            <div class="tab-pane fade" id="satelliteTab">
+                                <!-- 卫视频道列表 -->
+                            </div>
+                            <div class="tab-pane fade" id="localTab">
+                                <!-- 地方频道列表 -->
+                            </div>
+                            <div class="tab-pane fade" id="sportsTab">
+                                <!-- 体育频道列表 -->
+                            </div>
+                            <div class="tab-pane fade" id="movieTab">
+                                <!-- 影视频道列表 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>系统状态</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Nginx服务
+                                <span class="badge bg-success rounded-pill" id="nginxStatus">运行中</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                转码服务
+                                <span class="badge bg-success rounded-pill" id="transcodeStatus">运行中</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                活跃频道数
+                                <span class="badge bg-primary rounded-pill" id="activeChannels">10</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                CPU使用率
+                                <span class="badge bg-info rounded-pill" id="cpuUsage">24%</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                内存使用率
+                                <span class="badge bg-warning rounded-pill" id="memoryUsage">38%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>系统日志</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="log-container" id="logContainer">
+                            <!-- 动态加载日志 -->
+                            <div class="text-muted small">加载日志中...</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-sm btn-outline-secondary" id="refreshLogBtn">刷新日志</button>
+                        <button class="btn btn-sm btn-outline-danger" id="clearLogBtn">清除日志</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加频道模态框 -->
+    <div class="modal fade" id="addChannelModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">添加新频道</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addChannelForm">
+                        <div class="mb-3">
+                            <label for="channelName" class="form-label">频道名称</label>
+                            <input type="text" class="form-control" id="channelName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="channelCategory" class="form-label">分类</label>
+                            <select class="form-select" id="channelCategory" required>
+                                <option value="央视">央视</option>
+                                <option value="卫视">卫视</option>
+                                <option value="地方">地方</option>
+                                <option value="体育">体育</option>
+                                <option value="影视">影视</option>
+                                <option value="国际">国际</option>
+                                <option value="其他">其他</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="channelUrl" class="form-label">播放地址</label>
+                            <input type="url" class="form-control" id="channelUrl" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">画质</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="流畅" id="qualityLow">
+                                <label class="form-check-label" for="qualityLow">流畅</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="标清" id="qualityMedium">
+                                <label class="form-check-label" for="qualityMedium">标清</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="高清" id="qualityHigh" checked>
+                                <label class="form-check-label" for="qualityHigh">高清</label>
+                            </div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="channelActive" checked>
+                            <label class="form-check-label" for="channelActive">启用</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="saveChannelBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html> 

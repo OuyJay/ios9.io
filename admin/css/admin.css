@@ -1,0 +1,112 @@
+/* 管理后台样式 */
+
+body {
+    background-color: #f8f9fa;
+}
+
+/* 日志容器样式 */
+.log-container {
+    height: 200px;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.log-container .log-entry {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed #dee2e6;
+}
+
+.log-container .log-entry.log-error {
+    color: #dc3545;
+}
+
+.log-container .log-entry.log-warning {
+    color: #ffc107;
+}
+
+.log-container .log-entry.log-info {
+    color: #0d6efd;
+}
+
+/* 状态指示器 */
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.status-indicator.status-success {
+    background-color: #198754;
+}
+
+.status-indicator.status-warning {
+    background-color: #ffc107;
+}
+
+.status-indicator.status-danger {
+    background-color: #dc3545;
+}
+
+/* 表格样式优化 */
+.table th {
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+.url-cell {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.action-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* 标签色彩 */
+.quality-badge {
+    display: inline-block;
+    margin-right: 5px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: white;
+}
+
+.quality-badge.quality-high {
+    background-color: #198754;
+}
+
+.quality-badge.quality-medium {
+    background-color: #0d6efd;
+}
+
+.quality-badge.quality-low {
+    background-color: #6c757d;
+}
+
+/* 模态框优化 */
+.modal-header {
+    background-color: #f8f9fa;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .action-buttons .btn {
+        margin-bottom: 5px;
+    }
+} 
