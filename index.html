@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>电视直播</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+            background: #f2f2f7;
+            color: #1c1c1e;
+            line-height: 1.4;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .header {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 10px 16px;
+            padding-top: max(10px, env(safe-area-inset-top));
+            border-bottom: 0.5px solid rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 17px;
+            font-weight: 600;
+            text-align: center;
+            margin: 0;
+        }
+
+        .player-container {
+            width: 100%;
+            background: #000;
+            position: relative;
+            margin-top: 44px;
+        }
+
+        .player-wrapper {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 */
+        }
+
+        #videoPlayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            object-fit: contain;
+        }
+
+        .channels-container {
+            padding: 16px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .channel-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.2s;
+        }
+
+        .channel-item:active {
+            transform: scale(0.96);
+            background: #f2f2f7;
+        }
+
+        .channel-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .channel-name {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .custom-source {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .custom-source input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e5ea;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .custom-source button {
+            width: 100%;
+            padding: 12px;
+            background: #007aff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .status-toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            border-radius: 20px;
+            color: #fff;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .status-toast.show {
+            opacity: 1;
+        }
+
+        .status-success { background: #34c759; }
+        .status-error { background: #ff3b30; }
+        .status-loading { background: #007aff; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>电视直播</h1>
+    </div>
+
+    <div class="player-container">
+        <div class="player-wrapper">
+            <video id="videoPlayer"
+                   playsinline
+                   webkit-playsinline
+                   x-webkit-airplay="allow"
+                   x5-video-player-type="h5"
+                   x5-video-player-fullscreen="true"
+                   x5-video-orientation="portraint"
+                   preload="auto"
+                   controls>
+            </video>
+        </div>
+    </div>
+
+    <div class="channels-container">
+        <div class="section-title">央视频道</div>
+        <div class="channel-grid">
+            <div class="channel-item" onclick="playChannel('CCTV1')">
+                <div class="channel-icon">📺</div>
+                <div class="channel-name">CCTV-1 综合</div>
+            </div>
+            <div class="channel-item" onclick="playChannel('CCTV5')">
+                <div class="channel-icon">⚽️</div>
+                <div class="channel-name">CCTV-5 体育</div>
+            </div>
+        </div>
+
+        <div class="section-title">卫视频道</div>
+        <div class="channel-grid">
+            <div class="channel-item" onclick="playChannel('HUNANTV')">
+                <div class="channel-icon">🎭</div>
+                <div class="channel-name">湖南卫视</div>
+            </div>
+            <div class="channel-item" onclick="playChannel('DRAGONTV')">
+                <div class="channel-icon">🐉</div>
+                <div class="channel-name">东方卫视</div>
+            </div>
+        </div>
+
+        <div class="section-title">港澳频道</div>
+        <div class="channel-grid">
+            <div class="channel-item" onclick="playChannel('TVB')">
+                <div class="channel-icon">🎬</div>
+                <div class="channel-name">TVB</div>
+            </div>
+            <div class="channel-item" onclick="playChannel('J2')">
+                <div class="channel-icon">🌟</div>
+                <div class="channel-name">J2</div>
+            </div>
+        </div>
+
+        <div class="custom-source">
+            <div class="section-title">自定义源</div>
+            <input type="text" id="customUrl" placeholder="输入m3u8直播源地址">
+            <button onclick="playCustomSource()">播放</button>
+        </div>
+    </div>
+
+    <div id="statusToast" class="status-toast"></div>
+
+    <script>
+        const channels = {
+            'CCTV1': [
+                'https://node1.olelive.com:6443/live/CCTV1HD/hls.m3u8',
+                'http://dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221226231/index.m3u8'
+            ],
+            'CCTV5': [
+                'https://node1.olelive.com:6443/live/CCTV5HD/hls.m3u8',
+                'http://dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221226395/index.m3u8'
+            ],
+            'TVB': [
+                'http://23.237.10.66:16106',
+                'http://23.237.10.66:16410'
+            ],
+            'J2': [
+                'https://p2.weizan.cn/1646497941/269664979080385265/live.m3u8',
+                'http://r.jdshipin.com/ndGgS'
+            ],
+            'HUNANTV': [
+                'http://dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221226211/index.m3u8'
+            ],
+            'DRAGONTV': [
+                'http://dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221226217/index.m3u8'
+            ]
+        };
+
+        let currentChannel = '';
+        let currentSourceIndex = 0;
+        let retryCount = 0;
+        const maxRetries = 3;
+
+        const video = document.getElementById('videoPlayer');
+        const toast = document.getElementById('statusToast');
+
+        function showStatus(message, type) {
+            toast.textContent = message;
+            toast.className = 'status-toast show';
+            toast.classList.add(`status-${type}`);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.className = 'status-toast';
+                }, 300);
+            }, 3000);
+        }
+
+        function playChannel(channelId) {
+            if (!channels[channelId]) {
+                showStatus('频道不存在', 'error');
+                return;
+            }
+
+            currentChannel = channelId;
+            currentSourceIndex = 0;
+            retryCount = 0;
+            playCurrentSource();
+        }
+
+        function checkHLSSupport() {
+            const hasNativeHLS = video.canPlayType('application/vnd.apple.mpegurl');
+            return {
+                supported: hasNativeHLS === 'maybe' || hasNativeHLS === 'probably',
+                type: hasNativeHLS ? 'native' : 'none'
+            };
+        }
+
+        function playCurrentSource() {
+            const sources = channels[currentChannel];
+            if (currentSourceIndex >= sources.length) {
+                showStatus('所有线路尝试失败，请稍后重试', 'error');
+                return;
+            }
+
+            const url = sources[currentSourceIndex];
+            if (!url.includes('.m3u8')) {
+                showStatus('不支持的直播源格式，仅支持m3u8格式', 'error');
+                handlePlayError(new Error('不支持的格式'));
+                return;
+            }
+
+            showStatus(`正在加载: ${currentChannel}`, 'loading');
+            const hlsSupport = checkHLSSupport();
+
+            try {
+                if (hlsSupport.supported) {
+                    video.src = url;
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise
+                            .then(() => {
+                                showStatus(`正在播放: ${currentChannel}`, 'success');
+                            })
+                            .catch(error => {
+                                console.error('播放失败:', error);
+                                if (error.name === 'NotSupportedError') {
+                                    showStatus('视频编码格式不支持，请尝试其他线路', 'error');
+                                } else if (error.name === 'NotAllowedError') {
+                                    showStatus('播放被阻止，请检查浏览器设置', 'error');
+                                } else {
+                                    handlePlayError(error);
+                                }
+                            });
+                    }
+                } else {
+                    showStatus('当前设备不支持HLS直播流播放，请使用Safari浏览器', 'error');
+                }
+            } catch (error) {
+                handlePlayError(error);
+            }
+        }
+
+        function handlePlayError(error) {
+            console.error('播放错误:', error);
+            retryCount++;
+
+            if (retryCount < maxRetries) {
+                showStatus(`播放失败，正在重试 (${retryCount}/${maxRetries})`, 'loading');
+                setTimeout(playCurrentSource, 1000);
+            } else {
+                retryCount = 0;
+                currentSourceIndex++;
+                if (currentSourceIndex < channels[currentChannel].length) {
+                    showStatus('切换备用线路...', 'loading');
+                    setTimeout(playCurrentSource, 1000);
+                } else {
+                    showStatus('该频道暂时无法播放', 'error');
+                }
+            }
+        }
+
+        function playCustomSource() {
+            const url = document.getElementById('customUrl').value.trim();
+            if (!url) {
+                showStatus('请输入直播源地址', 'error');
+                return;
+            }
+            if (!url.includes('.m3u8')) {
+                showStatus('iOS 9仅支持m3u8格式的HLS直播流', 'error');
+                return;
+            }
+
+            currentChannel = '自定义源';
+            currentSourceIndex = 0;
+            retryCount = 0;
+
+            const hlsSupport = checkHLSSupport();
+            if (!hlsSupport.supported) {
+                showStatus('当前设备不支持HLS直播流播放，请使用Safari浏览器', 'error');
+                return;
+            }
+
+            try {
+                video.src = url;
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            showStatus('正在播放自定义源', 'success');
+                        })
+                        .catch(error => {
+                            console.error('播放失败:', error);
+                            if (error.name === 'NotSupportedError') {
+                                showStatus('视频编码不支持，请确保使用H.264+AAC编码', 'error');
+                            } else if (error.name === 'NotAllowedError') {
+                                showStatus('播放被阻止，请检查浏览器设置', 'error');
+                            } else {
+                                showStatus('播放失败: ' + error.message, 'error');
+                            }
+                        });
+                }
+            } catch (error) {
+                showStatus('播放出错: ' + error.message, 'error');
+            }
+        }
+
+        // 错误处理
+        video.addEventListener('error', (e) => {
+            console.error('视频错误:', e.target.error);
+            const mediaError = e.target.error;
+            if (mediaError) {
+                switch (mediaError.code) {
+                    case MediaError.MEDIA_ERR_ABORTED:
+                        handlePlayError(new Error('播放被中断'));
+                        break;
+                    case MediaError.MEDIA_ERR_NETWORK:
+                        handlePlayError(new Error('网络错误，请检查网络连接'));
+                        break;
+                    case MediaError.MEDIA_ERR_DECODE:
+                        showStatus('视频解码错误，当前设备可能不支持该编码格式', 'error');
+                        break;
+                    case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                        showStatus('不支持的视频格式或直播源无效', 'error');
+                        break;
+                    default:
+                        handlePlayError(new Error('视频加载失败'));
+                }
+            }
+        });
+
+        // 自动恢复播放
+        video.addEventListener('pause', () => {
+            if (currentChannel) {
+                setTimeout(() => {
+                    video.play().catch(() => {});
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
